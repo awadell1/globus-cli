@@ -3,6 +3,7 @@ from __future__ import annotations
 import functools
 import os
 import sys
+import json
 import typing as t
 
 import globus_sdk
@@ -254,3 +255,12 @@ def _resolve_namespace() -> str:
 
     else:
         return "userprofile/" + env + (f"/{profile}" if profile else "")
+
+
+def known_endpoint(name: str) -> str | None:
+    path = os.path.join(_get_data_dir(), "endpoints.json")
+    if os.path.isfile(path):
+        with open(path, "r") as fid:
+            return json.load(fid).get(name, None)
+    else:
+        return None

@@ -5,6 +5,8 @@ import uuid
 
 import click
 
+from ...login_manager.storage import known_endpoint
+
 
 class EndpointPlusPath(click.ParamType):
     """
@@ -64,7 +66,7 @@ class EndpointPlusPath(click.ParamType):
         # split the value on the first colon, leave the rest intact
         splitval = value.split(":", 1)
         # first element is the endpoint_id
-        endpoint_id = click.UUID(splitval[0])
+        endpoint_id = click.UUID(known_endpoint(splitval[0]) or splitval[0])
 
         # get the second element, defaulting to `None` if there was no colon in
         # the original value
