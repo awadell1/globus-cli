@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import typing as t
 import uuid
+from pathlib import Path
 
 import click
 import globus_sdk
@@ -412,8 +413,13 @@ def transfer_command(
             raise click.UsageError(
                 "Transfer requires either `SOURCE_PATH` and `DEST_PATH` or `--batch`"
             )
+
+        # Auto set filename
+        cmd_source_path = Path(cmd_source_path).absolute()
+        if cmd_dest_path.endswith("/"):
+            cmd_dest_path = cmd_dest_path + cmd_source_path.name
         transfer_data.add_item(
-            cmd_source_path,
+            str(cmd_source_path),
             cmd_dest_path,
             external_checksum=external_checksum,
             checksum_algorithm=checksum_algorithm,
