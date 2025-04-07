@@ -415,9 +415,8 @@ def transfer_command(
             )
 
         # Auto set filename
-        cmd_source_path = Path(cmd_source_path).absolute()
         if cmd_dest_path.endswith("/"):
-            cmd_dest_path = cmd_dest_path + cmd_source_path.name
+            cmd_dest_path = cmd_dest_path + Path(cmd_source_path).name
         transfer_data.add_item(
             str(cmd_source_path),
             cmd_dest_path,
